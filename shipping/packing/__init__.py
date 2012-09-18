@@ -200,11 +200,9 @@ def allpermutations(todo, bin, iterlimit=5000):
     return bestpack['bins'], bestpack['rest']
 
 
-def binpack(packages, bin=None, iterlimit=5000):
+def binpack(packages, bin, iterlimit=5000):
     """Packs a list of Package() objects into a number of equal-sized bins.
 
     Returns a list of bins listing the packages within the bins and a list of packages which can't be
     packed because they are to big."""
-    if not bin:
-        bin = Package("600x400x400")
     return allpermutations(packages, bin, iterlimit)

@@ -7,7 +7,7 @@ from shipping.packing.package import Package
 
 class PackingTests(unittest.TestCase):
 
-    def test_can_be_packing_two_packages_in_one_bin(self):
+    def test_can_be_pack_two_packages_in_one_bin(self):
 
         package_one = Package("100x100x100")
         package_two = Package("200x200x200")
@@ -22,7 +22,7 @@ class PackingTests(unittest.TestCase):
         best[0].should.be.length_of(2)
         rest.should.be([0])
 
-    def test_can_be_packing_four_packages_in_two_bin(self):
+    def test_can_be_pack_four_packages_in_two_bins(self):
         package_one = Package("100x100x100")
         package_two = Package("200x200x200")
         package_three = Package("100x100x100")
@@ -43,3 +43,14 @@ class PackingTests(unittest.TestCase):
         best[0].should.be.length_of(3)
         best[1].should.be.length_of(1)
         rest.should.be([])
+
+    def test_can_not_be_pack_a_package_in_small_bin(self):
+        package = Package("400x300x200")
+
+        bin = Package("300x300x300")
+
+        best, rest = binpack([package], bin)
+
+        best.should.be([])
+        rest.should.be.length_of(1)
+        package.should.be.within(rest)
