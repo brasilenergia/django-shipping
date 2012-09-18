@@ -70,6 +70,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'shipping',
+    'south',
     'unclebob',
 )
 TEST_RUNNER = 'unclebob.runners.Nose'
