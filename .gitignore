@@ -1,5 +1,6 @@
 *.py[co]
 
+shipping.lite
 # Packages
 *.egg
 *.egg-info
