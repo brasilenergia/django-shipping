@@ -10,6 +10,7 @@ STATUS = (
 class Zone(models.Model):
     name = models.CharField(max_length=100)
     status = models.IntegerField(max_length=2, choices=STATUS)
+    carrier = models.ForeignKey('Carrier')
 
     def __unicode__(self):
         return self.name
@@ -53,7 +54,6 @@ class Package(models.Model):
 class Carrier(models.Model):
     name = models.CharField(max_length=100)
     status = models.IntegerField(max_length=2, choices=STATUS)
-    zones = models.ManyToManyField(Zone)
 
     def __unicode__(self):
         return self.name

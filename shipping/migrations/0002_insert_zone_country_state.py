@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
-import datetime
+import os
 from south.db import db
 from south.v2 import DataMigration
-from django.db import models
+
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        db.execute(open('zone.sql').read())
-        db.execute(open('country.sql').read())
-        db.execute(open('state.sql').read())
+        path = lambda p: os.path.join(os.path.dirname(__file__), p)
+
+        db.execute_many(open(path('zone.sql')).read())
+        db.execute_many(open(path('country.sql')).read())
+        db.execute_many(open(path('state.sql')).read())
 
     def backwards(self, orm):
-        db.execute('delete * from shipping_zone;')
-        db.execute('delete * from shipping_country;')
-        db.execute('delete * from state;')
+        db.execute_many('delete * from shipping_zone;')
+        db.execute_many('delete * from shipping_country;')
+        db.execute_many('delete * from state;')
 
     models = {
         'shipping.carrier': {

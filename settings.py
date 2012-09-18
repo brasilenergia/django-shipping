@@ -73,5 +73,7 @@ INSTALLED_APPS = (
     'south',
     'unclebob',
 )
+
+SOUTH_TESTS_MIGRATE = True
 TEST_RUNNER = 'unclebob.runners.Nose'
 unclebob.take_care_of_my_tests()
