@@ -20,9 +20,17 @@ class StateAdmin(admin.ModelAdmin):
     search_fields = ('name', 'country__name')
 
 
+class PackageInline(admin.TabularInline):
+    model = Package
+    extra = 5
+
+
+class CorreiosCarrierAdmin(admin.ModelAdmin):
+    inlines = [PackageInline]
+
 admin.site.register(Zone, ZoneAdmin)
 admin.site.register(Country, CountryAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(UPSCarrier)
-admin.site.register(CorreiosCarrier)
+admin.site.register(CorreiosCarrier, CorreiosCarrierAdmin)
 admin.site.register(Package)
