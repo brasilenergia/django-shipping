@@ -31,6 +31,8 @@ datasets.
 
 Created by Maximillian Dornseif on 2010-08-14.
 Copyright (c) 2010 HUDORA. All rights reserved.
+
+https://github.com/hudora/pyShipping
 """
 import random
 from shipping.packing.package import Package

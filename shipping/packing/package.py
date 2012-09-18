@@ -5,6 +5,8 @@ package.py - shipping/cargo related calculations based on a unit of shipping (bo
 Created by Maximillian Dornseif on 2006-12-02.
 Copyright HUDORA GmbH 2006, 2007, 2010
 You might consider this BSD-Licensed.
+
+https://github.com/hudora/pyShipping
 """
 
 
