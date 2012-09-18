@@ -1,6 +1,6 @@
 # coding: utf-8
 import unittest
-from shipping.binpack.package import Package
+from shipping.packing.package import Package
 
 
 class PackageTests(unittest.TestCase):
