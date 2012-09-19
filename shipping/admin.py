@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.contrib import admin
-from shipping.models import (Zone, Country, State, UPSCarrier, CorreiosCarrier, Package)
+from shipping.models import (Zone, Country, State, UPSCarrier, CorreiosCarrier, Bin)
 
 
 class ZoneAdmin(admin.ModelAdmin):
@@ -20,17 +20,17 @@ class StateAdmin(admin.ModelAdmin):
     search_fields = ('name', 'country__name')
 
 
-class PackageInline(admin.TabularInline):
-    model = Package
+class BinInline(admin.TabularInline):
+    model = Bin
     extra = 5
 
 
 class CorreiosCarrierAdmin(admin.ModelAdmin):
-    inlines = [PackageInline]
+    inlines = [BinInline]
 
 admin.site.register(Zone, ZoneAdmin)
 admin.site.register(Country, CountryAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(UPSCarrier)
 admin.site.register(CorreiosCarrier, CorreiosCarrierAdmin)
-admin.site.register(Package)
+admin.site.register(Bin)

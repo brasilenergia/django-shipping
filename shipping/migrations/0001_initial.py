@@ -13,6 +13,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('status', self.gf('django.db.models.fields.IntegerField')(max_length=2)),
+            ('carrier', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['shipping.Carrier'], null=True)),
         ))
         db.send_create_signal('shipping', ['Zone'])
 
@@ -35,8 +36,8 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('shipping', ['State'])
 
-        # Adding model 'Package'
-        db.create_table('shipping_package', (
+        # Adding model 'Bin'
+        db.create_table('shipping_bin', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('width', self.gf('django.db.models.fields.IntegerField')()),
@@ -45,7 +46,7 @@ class Migration(SchemaMigration):
             ('weight', self.gf('django.db.models.fields.FloatField')()),
             ('carrier', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['shipping.Carrier'])),
         ))
-        db.send_create_signal('shipping', ['Package'])
+        db.send_create_signal('shipping', ['Bin'])
 
         # Adding model 'Carrier'
         db.create_table('shipping_carrier', (
@@ -54,14 +55,6 @@ class Migration(SchemaMigration):
             ('status', self.gf('django.db.models.fields.IntegerField')(max_length=2)),
         ))
         db.send_create_signal('shipping', ['Carrier'])
-
-        # Adding M2M table for field zones on 'Carrier'
-        db.create_table('shipping_carrier_zones', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('carrier', models.ForeignKey(orm['shipping.carrier'], null=False)),
-            ('zone', models.ForeignKey(orm['shipping.zone'], null=False))
-        ))
-        db.create_unique('shipping_carrier_zones', ['carrier_id', 'zone_id'])
 
         # Adding model 'UPSCarrier'
         db.create_table('shipping_upscarrier', (
@@ -80,7 +73,7 @@ class Migration(SchemaMigration):
             ('state', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['shipping.State'])),
             ('rate_service', self.gf('django.db.models.fields.IntegerField')(max_length=2)),
             ('pickup_type', self.gf('django.db.models.fields.IntegerField')(max_length=2)),
-            ('package_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['shipping.Package'])),
+            ('package_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['shipping.Bin'])),
         ))
         db.send_create_signal('shipping', ['UPSCarrier'])
 
@@ -104,14 +97,11 @@ class Migration(SchemaMigration):
         # Deleting model 'State'
         db.delete_table('shipping_state')
 
-        # Deleting model 'Package'
-        db.delete_table('shipping_package')
+        # Deleting model 'Bin'
+        db.delete_table('shipping_bin')
 
         # Deleting model 'Carrier'
         db.delete_table('shipping_carrier')
-
-        # Removing M2M table for field zones on 'Carrier'
-        db.delete_table('shipping_carrier_zones')
 
         # Deleting model 'UPSCarrier'
         db.delete_table('shipping_upscarrier')
@@ -125,8 +115,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Carrier'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'status': ('django.db.models.fields.IntegerField', [], {'max_length': '2'}),
-            'zones': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['shipping.Zone']", 'symmetrical': 'False'})
+            'status': ('django.db.models.fields.IntegerField', [], {'max_length': '2'})
         },
         'shipping.correioscarrier': {
             'Meta': {'object_name': 'CorreiosCarrier', '_ormbases': ['shipping.Carrier']},
@@ -143,8 +132,8 @@ class Migration(SchemaMigration):
             'status': ('django.db.models.fields.IntegerField', [], {'max_length': '2'}),
             'zone': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['shipping.Zone']"})
         },
-        'shipping.package': {
-            'Meta': {'object_name': 'Package'},
+        'shipping.bin': {
+            'Meta': {'object_name': 'Bin'},
             'carrier': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['shipping.Carrier']"}),
             'height': ('django.db.models.fields.IntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -168,7 +157,7 @@ class Migration(SchemaMigration):
             'city': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['shipping.Country']"}),
             'dimension_unit': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
-            'package_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['shipping.Package']"}),
+            'package_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['shipping.Bin']"}),
             'pickup_type': ('django.db.models.fields.IntegerField', [], {'max_length': '2'}),
             'rate_service': ('django.db.models.fields.IntegerField', [], {'max_length': '2'}),
             'state': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['shipping.State']"}),
@@ -181,6 +170,7 @@ class Migration(SchemaMigration):
         },
         'shipping.zone': {
             'Meta': {'object_name': 'Zone'},
+            'carrier': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['shipping.Carrier']", "null": 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'status': ('django.db.models.fields.IntegerField', [], {'max_length': '2'})
