@@ -3,6 +3,8 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from shipping.packing.package import Package
 from shipping.packing import binpack
+from shipping.carriers.correios import CorreiosInterface, CorreiosService
+
 
 STATUS = (
     (0, 'Unavailable'),
@@ -98,16 +100,17 @@ class Carrier(models.Model):
         # calc the best packing
         best_packing, rest = binpack(packages, best_bin.get_package())
 
-        total_coast = 0.0
+        total_cost = 0.0
         for pack in best_packing:
 
             # calc total weight, sum of all packages plus bin weight
             weight_total = sum([package.weight for package in pack]) + best_bin.weight
 
-            # calc price for shipping each pack
-            total_coast += self.calculate_shipping_coast(best_bin, weight_total)
+            # calc shipping price for each pack
+            total_cost += (self.interface.get_shipping_cost(
+                best_bin.get_package(), weight_total, zipcode))
 
-        return total_coast
+        return total_cost
 
     def get_best_bin_for_packages(self, packages):
         """ choose the best bin for a list of packages
@@ -122,7 +125,7 @@ class Carrier(models.Model):
         my_packages.sort()
 
         for package in my_packages:
-            if package > greater_package:
+            if package.heigth > greater_package.heigth:
                 return package.bin
 
         # when best bin not found, returns de greater bin
@@ -193,5 +196,7 @@ class CorreiosCarrier(Carrier):
     correios_password = models.CharField(max_length=200, help_text='required when using E-Sedex')
     zip_code = models.CharField(max_length=20)
 
-    def calculate_shipping_coast(self, bin, weight_total):
-        return 1.0
+    @property
+    def interface(self):
+        return CorreiosInterface(zip_from=self.zip_code, company=self.correios_company,
+            password=self.correios_password, service=CorreiosService.SEDEX)

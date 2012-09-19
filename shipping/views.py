@@ -2,9 +2,7 @@
 import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
-from shipping.models import Bin, State
-from shipping.packing.package import Package
-from shipping.packing import binpack
+from shipping.models import State
 
 
 def estimation(request):
