@@ -53,9 +53,9 @@ class State(models.Model):
 
 class Bin(models.Model):
     name = models.CharField(max_length=255)
-    width = models.IntegerField(help_text="width in centimeters")
-    height = models.IntegerField(help_text="height in centimeters")
-    length = models.IntegerField(help_text="length in centimeters")
+    width = models.FloatField(help_text="width in centimeters")
+    height = models.FloatField(help_text="height in centimeters")
+    length = models.FloatField(help_text="length in centimeters")
     weight = models.FloatField(help_text="peso in kilograms")
 
     carrier = models.ForeignKey('Carrier', related_name='bins')
@@ -147,22 +147,22 @@ class UPSCarrier(Carrier):
     )
 
     # general
-    ups_login = models.CharField(max_length=255)
-    ups_password = models.CharField(max_length=255)
-    ups_id = models.CharField(max_length=255)
-    ups_api_key = models.CharField(max_length=255)
+    ups_login = models.CharField(max_length=255, null=True)
+    ups_password = models.CharField(max_length=255, null=True)
+    ups_id = models.CharField(max_length=255, null=True)
+    ups_api_key = models.CharField(max_length=255, null=True)
 
     # local confs
-    weight_unit = models.CharField(max_length=3, choices=WEIGHT_UNITS)
-    dimension_unit = models.CharField(max_length=3, choices=DIMENSION_UNITS)
+    weight_unit = models.CharField(max_length=3, choices=WEIGHT_UNITS, default='kg')
+    dimension_unit = models.CharField(max_length=3, choices=DIMENSION_UNITS, default='cm')
 
     # sender address
-    address_line_1 = models.CharField(max_length=255)
-    address_line_2 = models.CharField(max_length=255)
-    zip_code = models.CharField(max_length=20)
-    city = models.CharField(max_length=255)
-    country = models.ForeignKey(Country)
-    state = models.ForeignKey(State)
+    address_line_1 = models.CharField(max_length=255, null=True)
+    address_line_2 = models.CharField(max_length=255, null=True)
+    zip_code = models.CharField(max_length=20, null=True)
+    city = models.CharField(max_length=255, null=True)
+    country = models.ForeignKey(Country, null=True)
+    state = models.ForeignKey(State, null=True)
 
     # services
     RATE_SERVICES = (
@@ -175,7 +175,7 @@ class UPSCarrier(Carrier):
         (7, "Shipments Originating in the European Union"),
         (8, "Shipments Originating in Other Countries"),
     )
-    rate_service = models.IntegerField(max_length=2, choices=RATE_SERVICES)
+    rate_service = models.IntegerField(max_length=2, choices=RATE_SERVICES, default=8)
 
     PICKUP_TYPES = (
         (1, "Daily Pickup"),
@@ -186,15 +186,25 @@ class UPSCarrier(Carrier):
         (19, "Letter Center"),
         (20, "Air Service Center")
     )
-    pickup_type = models.IntegerField(max_length=2, choices=PICKUP_TYPES)
+    pickup_type = models.IntegerField(max_length=2, choices=PICKUP_TYPES, null=True)
 
-    package_type = models.ForeignKey('Bin')
+    PACKAGES_TYPES = [
+        ('02', 'Custom Packaging'),
+        ('01', 'UPS Letter'),
+        ('03', 'Tube'),
+        ('04', 'PAK'),
+        ('21', 'UPS Express Box'),
+        ('2a', 'Small Express Box'),
+        ('2b', 'Medium Express Box'),
+        ('2c', 'Large Express Box'),
+    ]
+    package_type = models.CharField(max_length=3, choices=PACKAGES_TYPES, default='21')
 
 
 class CorreiosCarrier(Carrier):
-    correios_company = models.CharField(max_length=200, help_text='required when using E-Sedex')
-    correios_password = models.CharField(max_length=200, help_text='required when using E-Sedex')
-    zip_code = models.CharField(max_length=20)
+    correios_company = models.CharField(max_length=200, null=True, help_text='required when using E-Sedex')
+    correios_password = models.CharField(max_length=200, null=True, help_text='required when using E-Sedex')
+    zip_code = models.CharField(max_length=20, null=True)
 
     @property
     def interface(self):
