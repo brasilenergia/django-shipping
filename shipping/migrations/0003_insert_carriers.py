@@ -1,26 +1,30 @@
 # -*- coding: utf-8 -*-
 from south.db import db
 from south.v2 import DataMigration
+from shipping.models import UPSCarrier, CorreiosCarrier, Bin
 
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        carrier = orm['UPSCarrier'].objects.create(name='UPS', status=1)
+        carrier = UPSCarrier.objects.create(name='UPS', status=1)
 
         # Large-18" x 13" x 3"
-        orm['Bin'].objects.create(name='UPS Express Box - Large',
-            height=45.72, width=33.02, length=7.62, carrier=carrier)
+        Bin.objects.create(name='UPS Express Box - Large',
+            height=45.72, width=33.02, length=7.62, weight=0,
+            carrier=carrier)
 
         # Medium-15" x 11" x 3"
-        orm['Bin'].objects.create(name='UPS Express Box - Medium',
-            height=38.1, width=27.94, length=7.62, carrier=carrier)
+        Bin.objects.create(name='UPS Express Box - Medium',
+            height=38.1, width=27.94, length=7.62, weight=0,
+            carrier=carrier)
 
         # Small- 13" x 11" x 2"
-        orm['Bin'].objects.create(name='UPS Express Box - Small',
-            height=33.02, width=27.94, length=5.08, carrier=carrier)
+        Bin.objects.create(name='UPS Express Box - Small',
+            height=33.02, width=27.94, length=5.08, weight=0,
+            carrier=carrier)
 
-        carrier = orm['CorreiosCarrier'].objects.create(name='Correios',
+        carrier = CorreiosCarrier.objects.create(name='Correios',
             status=1)
 
     def backwards(self, orm):

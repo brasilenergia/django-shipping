@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from shipping.packing.package import Package
 from shipping.packing import binpack
 from shipping.carriers.correios import CorreiosInterface, CorreiosService
+from shipping.carriers.upsinterface import UPSInterface
 
 
 STATUS = (
@@ -87,7 +88,7 @@ class Carrier(models.Model):
         packages = []
         for dimension in dimensions:
             height, width, length, weight = dimension.split('x')
-            size = (int(height), int(width), int(length))
+            size = (float(height), float(width), float(length))
 
             package = Package(size, weight=float(weight))
             packages.append(package)
@@ -199,6 +200,10 @@ class UPSCarrier(Carrier):
         ('2c', 'Large Express Box'),
     ]
     package_type = models.CharField(max_length=3, choices=PACKAGES_TYPES, default='21')
+
+    @property
+    def interface(self):
+        return UPSInterface(self)
 
 
 class CorreiosCarrier(Carrier):

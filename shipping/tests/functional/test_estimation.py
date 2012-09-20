@@ -2,7 +2,7 @@
 import sure
 import fudge
 from django.test import TestCase
-from shipping.models import State, CorreiosCarrier, Bin
+from shipping.models import State, CorreiosCarrier, UPSCarrier, Bin, Country
 
 
 class EstimationTestCase(TestCase):
@@ -77,3 +77,44 @@ class EstimationTestCase(TestCase):
             zone.carrier = None
             zone.save()
             correios.delete()
+
+    def test_estimation_shipping_by_ups(self):
+        ups_carrier = UPSCarrier.objects.create(name='UPS Test', ups_login='login',
+            ups_password='pass', ups_id='myid', ups_api_key='1', zip_code='2203070',
+            address_line_1='address line 1', city='rio de janeiro',
+            country=Country.objects.get(id=58), state=State.objects.get(id=117),
+            package_type='21', status=1)
+
+        Bin.objects.create(name='UPS Express Box - Large',
+            height=45.72, width=33.02, length=7.62, weight=0,
+            carrier=ups_carrier)
+
+        # Medium-15" x 11" x 3"
+        Bin.objects.create(name='UPS Express Box - Medium',
+            height=38.1, width=27.94, length=7.62, weight=0,
+            carrier=ups_carrier)
+
+        # Small- 13" x 11" x 2"
+        Bin.objects.create(name='UPS Express Box - Small',
+            height=33.02, width=27.94, length=5.08, weight=0,
+            carrier=ups_carrier)
+
+        alabama_state = State.objects.get(id=1)
+        zipcode = "36201"
+
+        zone = alabama_state.country.zone
+        zone.carrier = ups_carrier
+        zone.save()
+
+        try:
+            response = self.client.post('/shipping/estimation', {
+                'state_id': alabama_state.id,
+                'zipcode': zipcode,
+                'dimensions': ('10x10x2x1.1', '1.2x17x30x0.2')
+            })
+            response.content.should.be.eql('{"price": 12.1}')
+            response.status_code.should.be(200)
+        finally:
+            zone.carrier = None
+            zone.save()
+            ups_carrier.delete()
