@@ -1,6 +1,6 @@
 *.py[co]
 
-shipping.lite
+*.sqlite3
 # Packages
 *.egg
 *.egg-info
