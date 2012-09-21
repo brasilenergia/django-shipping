@@ -104,7 +104,7 @@ LOGGING = {
         }
     },
     'loggers': {
-        '': {
+        'ups': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
