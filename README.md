@@ -27,5 +27,5 @@ INSTALLED_APPS = (
 Now, you need to run shipping migrations. We use south for this, go to your project dir and make:
 
 ``` bash
-$ pip manage.py migrate shipping
+$ python manage.py migrate shipping
 ```
