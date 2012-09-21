@@ -78,7 +78,8 @@ class EstimationTestCase(TestCase):
             zone.save()
             correios.delete()
 
-    def test_estimation_shipping_by_ups(self):
+    @fudge.patch('shipping.carriers.upsinterface.UPSClient')
+    def test_estimation_shipping_by_ups(self, fake_ups_client):
         ups_carrier = UPSCarrier.objects.create(name='UPS Test', ups_login='login',
             ups_password='pass', ups_id='myid', ups_api_key='1', zip_code='2203070',
             address_line_1='address line 1', city='rio de janeiro',
@@ -95,7 +96,7 @@ class EstimationTestCase(TestCase):
             carrier=ups_carrier)
 
         # Small- 13" x 11" x 2"
-        Bin.objects.create(name='UPS Express Box - Small',
+        small_package = Bin.objects.create(name='UPS Express Box - Small',
             height=33.02, width=27.94, length=5.08, weight=0,
             carrier=ups_carrier)
 
@@ -106,13 +107,37 @@ class EstimationTestCase(TestCase):
         zone.carrier = ups_carrier
         zone.save()
 
+        def rate(packages, shipper, recipient, package_type):
+            packages[0].height.should.be.eql(small_package.height)
+            packages[0].width.should.be.eql(small_package.width)
+            packages[0].length.should.be.eql(small_package.length)
+
+            shipper.city.should.be.eql(ups_carrier.city)
+            shipper.state.should.be.eql(ups_carrier.state.iso)
+            shipper.country.should.be.eql(ups_carrier.country.iso)
+            shipper.zip.should.be.eql(ups_carrier.zip_code)
+
+            recipient.city.should.be.eql('')
+            recipient.state.should.be.eql(alabama_state.iso)
+            recipient.country.should.be.eql(alabama_state.country.iso)
+            recipient.zip.should.be.eql(zipcode)
+
+            package_type.should.be.eql('21')
+
+            return {'info': [{
+                'package': '',
+                'delivery_day': '',
+                'cost': 10.1
+            }]}
+
+        fake_ups_client.is_callable().returns_fake().expects('rate').calls(rate)
         try:
             response = self.client.post('/shipping/estimation', {
                 'state_id': alabama_state.id,
                 'zipcode': zipcode,
                 'dimensions': ('10x10x2x1.1', '1.2x17x30x0.2')
             })
-            response.content.should.be.eql('{"price": 12.1}')
+            response.content.should.be.eql('{"price": 10.1}')
             response.status_code.should.be(200)
         finally:
             zone.carrier = None

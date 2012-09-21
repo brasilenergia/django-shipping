@@ -13,7 +13,7 @@ def estimation(request):
     state = get_object_or_404(State, id=state_id)
 
     carrier = state.country.zone.get_carrier()
-    price = carrier.estimate_shipping_for_zipcode(dimensions, zipcode)
+    price = carrier.estimate_shipping(dimensions, state, zipcode)
 
     response = json.dumps({'price': price})
     return HttpResponse(response, mimetype="application/json;charset=utf-8")

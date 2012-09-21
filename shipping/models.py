@@ -76,7 +76,7 @@ class Carrier(models.Model):
     name = models.CharField(max_length=100)
     status = models.IntegerField(max_length=2, choices=STATUS)
 
-    def estimate_shipping_for_zipcode(self, dimensions, zipcode):
+    def estimate_shipping(self, dimensions, state, zipcode):
         """ method that finds optimal solution for packing the products
         and according to the zone's carrier calc shipping estimation to zipcode
 
@@ -101,15 +101,8 @@ class Carrier(models.Model):
         # calc the best packing
         best_packing, rest = binpack(packages, best_bin.get_package())
 
-        total_cost = 0.0
-        for pack in best_packing:
-
-            # calc total weight, sum of all packages plus bin weight
-            weight_total = sum([package.weight for package in pack]) + best_bin.weight
-
-            # calc shipping price for each pack
-            total_cost += (self.interface.get_shipping_cost(
-                best_bin.get_package(), weight_total, zipcode))
+        total_cost = self.interface.get_shipping_cost(
+                bin=best_bin, packages=best_packing, state=state, zipcode=zipcode)
 
         return total_cost
 

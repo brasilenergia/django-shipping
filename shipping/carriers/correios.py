@@ -68,8 +68,8 @@ class CorreiosInterface(object):
         self._length, self._diameter, self._height, self._width = self._min_dimensions.get(self._format)
         self._weight = 0.3
 
-        if package.heigth > self._height:
-            self._height = package.heigth
+        if package.height > self._height:
+            self._height = package.height
 
         if package.width > self._width:
             self._width = package.width
@@ -145,10 +145,18 @@ class CorreiosInterface(object):
         else:
             return result.get('Valor')
 
-    def get_shipping_cost(self, package, weight_total, zip_to):
-        self._set_dimensions(package, weight_total)
-        self._zip_to = zip_to
+    def get_shipping_cost(self, bin, packages, zipcode, state):
+        self._zip_to = zipcode
 
-        price = self._make_request()
+        total_cost = 0.0
+        for pack in packages:
+            # calc total weight, sum of all packages plus bin weight
+            weight_total = sum([package.weight for package in pack]) + bin.weight
 
-        return float(price.replace(',', '.'))
+            # calc shipping price for each pack
+            self._set_dimensions(bin, weight_total)
+
+            price = self._make_request()
+            total_cost += float(price.replace(',', '.'))
+
+        return total_cost
