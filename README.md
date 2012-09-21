@@ -24,7 +24,7 @@ INSTALLED_APPS = (
 
 ```
 
-Now, you need to run shipping migrations. We use south for this, go to your project dir and make:
+Now, you need to run shipping migrations. We use [south](http://south.readthedocs.org/en/latest/index.html) for this, go to your project dir and make:
 
 ``` bash
 $ python manage.py migrate shipping
