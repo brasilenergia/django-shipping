@@ -12,7 +12,7 @@ Anyway, let's install this bitch! The first thing you'll want to do is run:
 $ pip install django-shipping
 ```
 
-Next, put `shippging`` in your ``INSTALLED_APPS``:
+Next, put ``shippging`` in your ``INSTALLED_APPS``:
 
 ``` python
 # settings.py
