@@ -22,8 +22,9 @@ class CountryTestCase(TestCase):
         response = self.client.get('/shipping/countries/BR.json')
         response_data = json.loads(response.content)
 
-        {u'iso': 'RJ', u'name': u'Rio de Janeiro'}.should.be\
+        {u'iso': 'RJ', u'name': u'Rio de Janeiro', u'id': 117}.should.be\
             .within(response_data['states'])
-        {u'iso': 'SP', u'name': u'São Paulo'}.should.be\
+
+        {u'iso': 'SP', u'name': u'São Paulo', u'id': 123}.should.be\
             .within(response_data['states'])
         response_data['states'].should.have.length_of(27)

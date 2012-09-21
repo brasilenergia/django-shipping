@@ -22,7 +22,7 @@ def states(request, country_code):
 
     response = {'states': []}
     for state in states:
-        response['states'].append({'iso': state.iso, 'name': state.name})
+        response['states'].append({'iso': state.iso, 'name': state.name, 'id': state.id})
 
     return HttpResponse(json.dumps(response), mimetype="application/json;charset=utf-8")
 
