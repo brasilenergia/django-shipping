@@ -16,6 +16,17 @@ def countries(request):
     return HttpResponse(json.dumps(response), mimetype="application/json;charset=utf-8")
 
 
+def states(request, country_code):
+    country = get_object_or_404(Country, iso=country_code)
+    states = country.states.order_by('name').all()
+
+    response = {'states': []}
+    for state in states:
+        response['states'].append({'iso': state.iso, 'name': state.name})
+
+    return HttpResponse(json.dumps(response), mimetype="application/json;charset=utf-8")
+
+
 def estimation(request):
     dimensions = request.POST.getlist('dimensions')
     zipcode = request.POST.get('zipcode')

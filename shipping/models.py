@@ -46,7 +46,7 @@ class Country(models.Model):
 class State(models.Model):
     name = models.CharField(max_length=100)
     iso = models.CharField(max_length=20)
-    country = models.ForeignKey(Country, null=True)
+    country = models.ForeignKey(Country, null=True, related_name='states')
 
     def __unicode__(self):
         return self.name
