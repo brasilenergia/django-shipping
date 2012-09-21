@@ -24,6 +24,26 @@ INSTALLED_APPS = (
 
 ```
 
+Put ``shipping.urls`` in your ``urls.py``:
+
+``` python
+# urls.py
+
+from django.conf.urls.defaults import patterns, include, url
+
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    # ...
+
+    url(r'^shipping/', include('shipping.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+))
+
+```
+
+
 You need to run shipping migrations. We use [south](http://south.readthedocs.org/en/latest/index.html) for this, go to your ``project`` dir and make:
 
 ``` bash
