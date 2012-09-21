@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 setup(
-    name='shipping',
+    name='django-shipping',
     version='0.0.1',
     description='Django shipping tool',
     long_description=open("README.md").read(),
