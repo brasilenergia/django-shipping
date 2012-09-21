@@ -8,7 +8,7 @@ register = template.Library()
 @register.inclusion_tag('shipping/freight.html', takes_context=True)
 def shipping_freight(context):
     countries = Country.objects.filter(zone__status=1).filter(status=1)\
-        .filter(states__isnull=False).distinct().order_by('name')
+        .order_by('name')
 
     context.update({'countries': countries})
 

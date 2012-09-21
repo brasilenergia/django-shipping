@@ -6,5 +6,8 @@ clean:
 
 	rm -rf build
 
+start: clean
+	python manage.py runserver
+
 test: clean
 	python manage.py test --settings=settings_test

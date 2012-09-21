@@ -67,7 +67,6 @@ class EstimationTestCase(TestCase):
 
         try:
             response = self.client.post('/shipping/estimation', {
-                'state': riodejaneiro_state.name,
                 'country_code': riodejaneiro_state.country.iso,
                 'zipcode': zipcode,
                 'dimensions': ('10x10x10x1.1', '8x17x30x0.2')
