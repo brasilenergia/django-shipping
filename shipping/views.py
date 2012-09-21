@@ -2,7 +2,18 @@
 import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
-from shipping.models import State
+from shipping.models import State, Zone, Country
+
+
+def countries(request):
+    countries = Country.objects.filter(zone__status=1).filter(status=1)\
+        .order_by('name').all()
+
+    response = {'countries': []}
+    for country in countries:
+        response['countries'].append({'iso': country.iso, 'name': country.name})
+
+    return HttpResponse(json.dumps(response), mimetype="application/json;charset=utf-8")
 
 
 def estimation(request):

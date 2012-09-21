@@ -18,7 +18,7 @@ INSERT INTO shipping_country (id, name, iso, status, zone_id) VALUES (17, "Unite
 INSERT INTO shipping_country (id, name, iso, status, zone_id) VALUES (18, "Sweden", "SE", 1, 1);
 INSERT INTO shipping_country (id, name, iso, status, zone_id) VALUES (19, "Switzerland", "CH", 1, 1);
 INSERT INTO shipping_country (id, name, iso, status, zone_id) VALUES (20, "Denmark", "DK", 1, 1);
-INSERT INTO shipping_country (id, name, iso, status, zone_id) VALUES (21, "United State", "2", 1, 2);
+INSERT INTO shipping_country (id, name, iso, status, zone_id) VALUES (21, "United State", "US", 1, 2);
 INSERT INTO shipping_country (id, name, iso, status, zone_id) VALUES (22, "HongKong", "HK", 1, 3);
 INSERT INTO shipping_country (id, name, iso, status, zone_id) VALUES (23, "Norway", "NO", 1, 1);
 INSERT INTO shipping_country (id, name, iso, status, zone_id) VALUES (24, "Australia", "AU", 1, 5);
