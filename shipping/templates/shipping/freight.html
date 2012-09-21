@@ -1,13 +1,32 @@
 <link href="{{ STATIC_URL }}shipping/css/shipping.css" type="text/css" media="screen" rel="stylesheet"/>
-<script type='text/javascript' src='{{STATIC_URL}}static/shipping/js/shipping.freight.js'></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type='text/javascript' src='{{STATIC_URL}}shipping/js/shipping.freight.js'></script>
 
 <div id='shipping-freight'>
-    <p>
+    <p class='clearfix'>
         <label>{{_('Choose a country')}}</label>
         <select name='country'>
             {% for country in countries %}
-                <options value='{{country.iso}}'>{{country.name}}</options>
+                <option value='{{country.iso}}'>{{country.name}}</option>
             {% endfor %}
         </select>
     </p>
+    <p  class='clearfix'>
+        <label>{{_('Choose a state')}}</label>
+        <select name='state'>
+            <option value='-1'> ------- </option>
+        </select>
+    </p>
+    <p  class='clearfix'>
+        <label>{{_('Zip code')}}</label>
+        <input type='text' name='zip' />
+    </p>
+    <a class='button' href='#'>calculate</a>
 </div>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#shipping-freight").shippingFreight();
+    })
+</script>

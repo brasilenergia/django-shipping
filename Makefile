@@ -5,3 +5,6 @@ clean:
 	find . -name '*.pyc' -exec rm -rf {} \;
 
 	rm -rf build
+
+test: clean
+	python manage.py test --settings=settings_test

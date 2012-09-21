@@ -145,7 +145,7 @@ class CorreiosInterface(object):
         else:
             return result.get('Valor')
 
-    def get_shipping_cost(self, bin, packages, zipcode, state):
+    def get_shipping_cost(self, bin, packages, country, state, zipcode):
         self._zip_to = zipcode
 
         total_cost = 0.0

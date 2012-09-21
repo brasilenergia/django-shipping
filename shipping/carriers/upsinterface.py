@@ -19,7 +19,7 @@ class UPSInterface(object):
             address2=ups_carrier.address_line_2)
         self.package_type = ups_carrier.package_type
 
-    def get_shipping_cost(self, bin, packages, zipcode, state):
+    def get_shipping_cost(self, bin, packages, country, state, zipcode):
 
         ups_packages = []
         for pack in packages:
@@ -29,7 +29,7 @@ class UPSInterface(object):
             width=bin.width, height=bin.height))
 
         recipient = Address(name='recipient address name', city='',
-            address='', state=state.iso, zip=zipcode, country=state.country.iso)
+            address='', state=state, zip=zipcode, country=country.iso)
 
         ups = UPSClient(self.credentials)
         rate_result = ups.rate(ups_packages, self.shipper, recipient, self.package_type)

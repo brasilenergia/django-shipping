@@ -5,9 +5,11 @@ from shipping.models import Country
 register = template.Library()
 
 
-@register.inclusion_tag('shipping/freight.html')
-def shipping_freight():
+@register.inclusion_tag('shipping/freight.html', takes_context=True)
+def shipping_freight(context):
     countries = Country.objects.filter(zone__status=1).filter(status=1)\
-        .order_by('name').all()
+        .filter(states__isnull=False).distinct().order_by('name')
 
-    return {'countries': countries}
+    context.update({'countries': countries})
+
+    return context

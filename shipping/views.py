@@ -7,7 +7,7 @@ from shipping.models import State, Zone, Country
 
 def countries(request):
     countries = Country.objects.filter(zone__status=1).filter(status=1)\
-        .order_by('name').all()
+        .order_by('name')
 
     response = {'countries': []}
     for country in countries:
@@ -30,12 +30,13 @@ def states(request, country_code):
 def estimation(request):
     dimensions = request.POST.getlist('dimensions')
     zipcode = request.POST.get('zipcode')
-    state_id = request.POST.get('state_id')
+    state = request.POST.get('state')
+    country_code = request.POST.get('country_code')
 
-    state = get_object_or_404(State, id=state_id)
+    country = get_object_or_404(Country, iso=country_code)
 
-    carrier = state.country.zone.get_carrier()
-    price = carrier.estimate_shipping(dimensions, state, zipcode)
+    carrier = country.zone.get_carrier()
+    price = carrier.estimate_shipping(dimensions, country, state, zipcode)
 
     response = json.dumps({'price': price})
     return HttpResponse(response, mimetype="application/json;charset=utf-8")
