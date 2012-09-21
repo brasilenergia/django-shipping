@@ -50,13 +50,13 @@ You need to run shipping migrations. We use [south](http://south.readthedocs.org
 $ python manage.py migrate shipping
 ```
 
+## Using
+
 Now, start your django application and go to admin:
 
 ``` bash
 $ python manage.py runserver
 ```
-
-## Using
 
 In django's admin you wi'll see the shipping models: ``Zone``, ``Country``, ``State``, ``Bin``, ``UPSCarrier`` and ``CorreiosCarrier``. You need to create one instance for each carrier that you'll use
 for shipping.
