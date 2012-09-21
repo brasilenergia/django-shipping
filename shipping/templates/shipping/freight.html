@@ -1,0 +1,13 @@
+<link href="{{ STATIC_URL }}shipping/css/shipping.css" type="text/css" media="screen" rel="stylesheet"/>
+<script type='text/javascript' src='{{STATIC_URL}}static/shipping/js/shipping.freight.js'></script>
+
+<div id='shipping-freight'>
+    <p>
+        <label>{{_('Choose a country')}}</label>
+        <select name='country'>
+            {% for country in countries %}
+                <options value='{{country.iso}}'>{{country.name}}</options>
+            {% endfor %}
+        </select>
+    </p>
+</div>

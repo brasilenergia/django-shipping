@@ -44,8 +44,8 @@ STATICFILES_FINDERS = (
 
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.filesystem.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -59,6 +59,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
+     LOCAL_FILE('templates')
 )
 
 INSTALLED_APPS = (
