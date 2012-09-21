@@ -10,7 +10,7 @@ class UPSInterface(object):
         self.credentials = {
             'username': ups_carrier.ups_login,
             'password': ups_carrier.ups_password,
-            'license_access': ups_carrier.ups_api_key,
+            'access_license': ups_carrier.ups_api_key,
             'shipper_number': ups_carrier.ups_id,
         }
         self.shipper = Address(name='shipper address name', city=ups_carrier.city,
