@@ -1,8 +1,10 @@
 # coding: utf-8
 import json
+import logging
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
-from shipping.models import State, Zone, Country
+from django.views.decorators.csrf import csrf_protect
+from django.http import HttpResponse, Http404
+from shipping.models import Country
 
 
 def countries(request):
@@ -27,6 +29,7 @@ def states(request, country_code):
     return HttpResponse(json.dumps(response), mimetype="application/json;charset=utf-8")
 
 
+@csrf_protect
 def estimation(request):
     dimensions = request.POST.getlist('dimensions')
     zipcode = request.POST.get('zipcode')
@@ -35,8 +38,16 @@ def estimation(request):
 
     country = get_object_or_404(Country, iso=country_code)
 
-    carrier = country.zone.get_carrier()
-    price = carrier.estimate_shipping(dimensions, country, state, zipcode)
+    if len(dimensions) < 1:
+        raise Http404()
 
-    response = json.dumps({'price': price})
+    try:
+        carrier = country.zone.get_carrier()
+        price = carrier.estimate_shipping(dimensions, country, state, zipcode)
+
+        response = json.dumps({'price': price})
+    except:
+        logging.exception('oops, problem when estimate shipping')
+        response = json.dumps({'error': "your country's carrier is unavailable"})
+
     return HttpResponse(response, mimetype="application/json;charset=utf-8")

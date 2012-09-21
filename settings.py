@@ -1,12 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-import sys
+# coding: utf-8
 import unclebob
 
 from os.path import dirname, abspath, join
 LOCAL_FILE = lambda *path: join(abspath(dirname(__file__)), *path)
-sys.path.append(LOCAL_FILE('apps'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -27,12 +23,16 @@ DATABASES = {
 TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
+
 USE_I18N = True
 USE_L10N = True
+
 MEDIA_ROOT = ''
 MEDIA_URL = ''
+
 STATIC_ROOT = LOCAL_FILE('static')
 STATIC_URL = '/static/'
+
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 STATICFILES_DIRS = (
 )
@@ -87,3 +87,28 @@ INSTALLED_APPS = (
 SOUTH_TESTS_MIGRATE = True
 TEST_RUNNER = 'unclebob.runners.Nose'
 unclebob.take_care_of_my_tests()
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+       'simple': {
+            'format': '%(levelname)s %(message)s'
+        }
+     },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+            'filters': []
+        },
+    }
+}

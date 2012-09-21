@@ -1,8 +1,11 @@
 #coding: utf-8
+import logging
 import urllib2
 import urllib
 import simplexml
 import math
+
+logger = logging.getLogger(__name__)
 
 
 class CorreiosFormat:
@@ -106,20 +109,25 @@ class CorreiosInterface(object):
             'sCepOrigem': self._zip_from,
             'sCepDestino': self._zip_to,
             'nCdServico': self._service,
-            'nVlAltura': self._height,
-            'nVlLargura': self._width,
-            'nVlComprimento': self._length,
-            'nVlDiametro': self._diameter,
+            'nVlAltura': int(self._height),
+            'nVlLargura': int(self._width),
+            'nVlComprimento': int(self._length),
+            'nVlDiametro': int(self._diameter),
             'nVlPeso': self._weight
         }
 
         return params
 
     def _make_request(self):
+        params = self._get_parameters()
         url = '%s?%s' % (self._endpoint,
-            urllib.urlencode(self._get_parameters()))
+            urllib.urlencode(params))
+
+        logger.debug('estimating freight on correios')
+        logger.debug(params)
 
         data = urllib2.urlopen(url, timeout=5).read()
+
         """
         Exemplo do retorno:
             <cServico>
@@ -135,6 +143,9 @@ class CorreiosInterface(object):
                 <MsgErro></MsgErro>
             </cServico>
         """
+        logger.debug('response from correios')
+        logger.debug(data)
+
         response = simplexml.loads(data)
 
         result = response['Servicos']['cServico']

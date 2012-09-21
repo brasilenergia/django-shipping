@@ -24,3 +24,16 @@
 #shipping-freight select{
     width:150px;
 }
+
+
+#shipping-freight .shipping-full-address{
+    display:none;
+}
+
+.shipping-loader{
+    display:none;
+}
+
+.shipping-loading .shipping-loader{
+    display:block !important;
+}

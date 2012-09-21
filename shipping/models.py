@@ -39,6 +39,10 @@ class Country(models.Model):
     status = models.IntegerField(max_length=2, choices=STATUS)
     zone = models.ForeignKey(Zone)
 
+    @property
+    def needs_full_address(self):
+        return self.zone.get_carrier().needs_full_address
+
     def __unicode__(self):
         return self.name
 
@@ -195,6 +199,10 @@ class UPSCarrier(Carrier):
     package_type = models.CharField(max_length=3, choices=PACKAGES_TYPES, default='21')
 
     @property
+    def needs_full_address(self):
+        return True
+
+    @property
     def interface(self):
         return UPSInterface(self)
 
@@ -203,6 +211,10 @@ class CorreiosCarrier(Carrier):
     correios_company = models.CharField(max_length=200, null=True, help_text='required when using E-Sedex')
     correios_password = models.CharField(max_length=200, null=True, help_text='required when using E-Sedex')
     zip_code = models.CharField(max_length=20, null=True)
+
+    @property
+    def needs_full_address(self):
+        return False
 
     @property
     def interface(self):
