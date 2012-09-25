@@ -4,7 +4,7 @@ import logging
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse, Http404
-from shipping.models import Country
+from shipping.models import Country, State
 
 
 def countries(request):
@@ -34,9 +34,12 @@ def estimation(request):
     dimensions = request.POST.getlist('dimensions')
     zipcode = request.POST.get('zipcode')
     state = request.POST.get('state')
+
     country_code = request.POST.get('country_code')
 
     country = get_object_or_404(Country, iso=country_code)
+    if state:
+        state = get_object_or_404(State, id=state)
 
     if len(dimensions) < 1:
         raise Http404()

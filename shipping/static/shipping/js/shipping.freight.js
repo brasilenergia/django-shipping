@@ -72,7 +72,7 @@
                             $shippingCost.html(response.error);
                         }
                         else{
-                            $shippingCost.html(response.price.currency(options.monetary));
+                            $shippingCost.html(parseFloat(response.price).currency(options.monetary));
                         }
                     }
                 });

@@ -29,7 +29,7 @@ class UPSInterface(object):
             width=bin.width, height=bin.height))
 
         recipient = Address(name='recipient address name', city='',
-            address='', state=state, zip=zipcode, country=country.iso)
+            address='', state=state.iso, zip=zipcode, country=country.iso)
 
         ups = UPSClient(self.credentials)
         rate_result = ups.rate(ups_packages, self.shipper, recipient, self.package_type)

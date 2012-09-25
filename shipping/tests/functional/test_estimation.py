@@ -118,7 +118,7 @@ class EstimationTestCase(TestCase):
             shipper.zip.should.be.eql(ups_carrier.zip_code)
 
             recipient.city.should.be.eql('')
-            recipient.state.should.be.eql(alabama_state.name)
+            recipient.state.should.be.eql(alabama_state.iso)
             recipient.country.should.be.eql(alabama_state.country.iso)
             recipient.zip.should.be.eql(zipcode)
 
@@ -133,7 +133,7 @@ class EstimationTestCase(TestCase):
         fake_ups_client.is_callable().returns_fake().expects('rate').calls(rate)
         try:
             response = self.client.post('/shipping/estimation', {
-                'state': alabama_state.name,
+                'state': alabama_state.id,
                 'country_code': alabama_state.country.iso,
                 'zipcode': zipcode,
                 'dimensions': ('10x10x2x1.1', '1.2x17x30x0.2')
