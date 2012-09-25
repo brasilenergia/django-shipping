@@ -114,7 +114,7 @@ class CorreiosInterface(object):
             'nVlLargura': int(self._width),
             'nVlComprimento': int(self._length),
             'nVlDiametro': int(self._diameter),
-            'nVlPeso': self._weight
+            'nVlPeso': str(self._weight).replace('.', ',')
         }
 
         return params

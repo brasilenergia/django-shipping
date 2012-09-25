@@ -23,7 +23,7 @@ class EstimationTestCase(TestCase):
             'nCdFormato=1',
             'sCepDestino=22031012',
             'sCepOrigem=2203070',
-            'nVlPeso=1.6',
+            'VlPeso=1%2C6',
             'sCdAvisoRecebimento=N'
         )
 
