@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse, Http404
 from shipping.models import Country, State
+from shipping.carriers import InterfaceError
 
 
 def countries(request):
@@ -49,8 +50,8 @@ def estimation(request):
         price = carrier.estimate_shipping(dimensions, country, state, zipcode)
 
         response = json.dumps({'price': price})
-    except:
+    except InterfaceError, ie:
         logging.exception('oops, problem when estimate shipping')
-        response = json.dumps({'error': "your country's carrier is unavailable"})
+        response = json.dumps({'error': ie})
 
     return HttpResponse(response, mimetype="application/json;charset=utf-8")

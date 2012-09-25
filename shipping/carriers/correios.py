@@ -1,4 +1,5 @@
 #coding: utf-8
+from shipping.carriers import InterfaceError
 import logging
 import urllib2
 import urllib
@@ -152,7 +153,7 @@ class CorreiosInterface(object):
 
         erro = int(result.get('Erro'))
         if erro != 0:
-            raise ValueError(result.get('MsgErro'))
+            raise InterfaceError(result.get('MsgErro'))
         else:
             return result.get('Valor')
 

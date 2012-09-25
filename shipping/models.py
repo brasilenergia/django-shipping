@@ -136,12 +136,12 @@ class Carrier(models.Model):
 
 class UPSCarrier(Carrier):
     WEIGHT_UNITS = (
-        ('kg', 'kilograms'),
-        ('lb', 'pounds'),
+        ('KGS', 'kilograms'),
+        ('LBS', 'pounds'),
     )
     DIMENSION_UNITS = (
-        ('cm', 'centimeters'),
-        ('in', 'inches'),
+        ('CM', 'centimeters'),
+        ('IN', 'inches'),
     )
 
     # general
@@ -151,8 +151,9 @@ class UPSCarrier(Carrier):
     ups_api_key = models.CharField(max_length=255, null=True)
 
     # local confs
-    weight_unit = models.CharField(max_length=3, choices=WEIGHT_UNITS, default='kg')
-    dimension_unit = models.CharField(max_length=3, choices=DIMENSION_UNITS, default='cm')
+    weight_unit = models.CharField(max_length=3, choices=WEIGHT_UNITS, default='KGS')
+    dimension_unit = models.CharField(max_length=3, choices=DIMENSION_UNITS, default='CM')
+    currency_code = models.CharField(max_length=3, default='USD', help_text='ups currency code')
 
     # sender address
     address_line_1 = models.CharField(max_length=255, null=True)

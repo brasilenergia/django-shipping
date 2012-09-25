@@ -7,7 +7,7 @@ clean:
 	rm -rf build
 
 start: clean
-	python manage.py runserver
+	python manage.py runserver 127.0.0.1:8001
 
 test: clean
 	python manage.py test --settings=settings_test
