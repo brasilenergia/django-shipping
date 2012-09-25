@@ -39,6 +39,6 @@ class UPSInterface(object):
         try:
             rate_result = self.ups.rate(ups_packages, self.shipper, recipient, self.package_type)
         except UPSError, e:
-            raise InterfaceError(e.text)
+            raise InterfaceError(str(e))
 
         return rate_result['info'][0]['cost']
