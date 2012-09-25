@@ -52,6 +52,6 @@ def estimation(request):
         response = json.dumps({'price': price})
     except InterfaceError, ie:
         logging.exception('oops, problem when estimate shipping')
-        response = json.dumps({'error': ie})
+        response = json.dumps({'error': str(ie)})
 
     return HttpResponse(response, mimetype="application/json;charset=utf-8")
