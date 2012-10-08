@@ -47,9 +47,9 @@ def estimation(request):
 
     try:
         carrier = country.zone.get_carrier()
-        price = carrier.estimate_shipping(dimensions, country, zipcode=zipcode, state=state)
+        price, currency = carrier.estimate_shipping(dimensions, country, zipcode=zipcode, state=state)
 
-        response = json.dumps({'price': price})
+        response = json.dumps({'price': price, 'currency': currency})
     except InterfaceError, ie:
         logging.exception('oops, problem when estimate shipping')
         response = json.dumps({'error': str(ie)})

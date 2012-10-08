@@ -14,7 +14,7 @@ def get_packages():
 
 setup(
     name='django-shipping',
-    version='0.0.5',
+    version='0.0.6',
     description='Django shipping tool',
     long_description=open("README.md").read(),
     author=u'Marcel Nicolay',

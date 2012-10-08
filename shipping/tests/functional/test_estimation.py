@@ -71,7 +71,7 @@ class EstimationTestCase(TestCase):
                 'zipcode': zipcode,
                 'dimensions': ('10x10x10x1.1', '8x17x30x0.2')
             })
-            response.content.should.be.eql('{"price": 12.1}')
+            response.content.should.be.eql('{"currency": "BRL", "price": 12.1}')
             response.status_code.should.be(200)
         finally:
             zone.carrier = None
@@ -127,7 +127,8 @@ class EstimationTestCase(TestCase):
             return {'info': [{
                 'package': '',
                 'delivery_day': '',
-                'cost': 10.1
+                'cost': 10.1,
+                'currency': 'USD'
             }]}
 
         fake_ups_client.is_callable().returns_fake().expects('rate').calls(rate)
@@ -138,7 +139,7 @@ class EstimationTestCase(TestCase):
                 'zipcode': zipcode,
                 'dimensions': ('10x10x2x1.1', '1.2x17x30x0.2')
             })
-            response.content.should.be.eql('{"price": 10.1}')
+            response.content.should.be.eql('{"currency": "USD", "price": 10.1}')
             response.status_code.should.be(200)
         finally:
             zone.carrier = None

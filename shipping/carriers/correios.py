@@ -171,4 +171,4 @@ class CorreiosInterface(object):
             price = self._make_request()
             total_cost += float(price.replace(',', '.'))
 
-        return total_cost
+        return total_cost, 'BRL'

@@ -105,10 +105,10 @@ class Carrier(models.Model):
         # calc the best packing
         best_packing, rest = binpack(packages, best_bin.get_package())
 
-        total_cost = self.interface.get_shipping_cost(
+        total_cost, currency = self.interface.get_shipping_cost(
                 bin=best_bin, packages=best_packing, country=country, zipcode=zipcode, state=state, city=city)
 
-        return total_cost
+        return total_cost, currency
 
     def get_best_bin_for_packages(self, packages):
         """ choose the best bin for a list of packages

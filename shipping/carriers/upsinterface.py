@@ -44,4 +44,4 @@ class UPSInterface(object):
         except UPSError, e:
             raise InterfaceError(str(e))
 
-        return rate_result['info'][0]['cost']
+        return rate_result['info'][0]['cost'], rate_result['info'][0]['currency']
