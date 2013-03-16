@@ -105,6 +105,9 @@ class Carrier(models.Model):
         # calc the best packing
         best_packing, rest = binpack(packages, best_bin.get_package())
 
+        if rest:
+            raise ValueError('Shipping could not be estimated! these itens do not have a valid package: %s ' % rest)
+
         total_cost, currency = self.interface.get_shipping_cost(
                 bin=best_bin, packages=best_packing, country=country, zipcode=zipcode, state=state, city=city)
 
@@ -123,7 +126,9 @@ class Carrier(models.Model):
         my_packages.sort()
 
         for package in my_packages:
-            if package.heigth > greater_package.heigth:
+            if (package.heigth > greater_package.heigth and
+            package.width > greater_package.width and
+            package.length > greater_package.length):
                 return package.bin
 
         # when best bin not found, returns de greater bin

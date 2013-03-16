@@ -127,7 +127,10 @@ class CorreiosInterface(object):
         logger.debug('estimating freight on correios')
         logger.debug(params)
 
-        data = urllib2.urlopen(url, timeout=5).read()
+        try:
+            data = urllib2.urlopen(url, timeout=5).read()
+        except:
+            raise InterfaceError('correios unavaible')
 
         """
         Exemplo do retorno:
