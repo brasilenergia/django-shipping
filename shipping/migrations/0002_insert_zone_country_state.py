@@ -9,9 +9,9 @@ class Migration(DataMigration):
     def forwards(self, orm):
         path = lambda p: os.path.join(os.path.dirname(__file__), p)
 
-        db.execute_many(open(path('zone.sql')).read())
-        db.execute_many(open(path('country.sql')).read())
-        db.execute_many(open(path('state.sql')).read())
+        db.execute_many(open(path('zone.sql')).read().decode('utf-8'))
+        db.execute_many(open(path('country.sql')).read().decode('utf-8'))
+        db.execute_many(open(path('state.sql')).read().decode('utf-8'))
 
     def backwards(self, orm):
         db.execute_many('delete * from shipping_zone;')

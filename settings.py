@@ -6,6 +6,7 @@ LOCAL_FILE = lambda *path: join(abspath(dirname(__file__)), *path)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+SECRET_KEY = '63fr&*els978+7@^qt$lfxj2jd19+pd&qo-05rv(_%3&o0xign'
 
 ADMINS = (
     (u'Marcel Nicolay', 'marcelnicolay@gmail.com'),
