@@ -80,7 +80,8 @@ class Carrier(models.Model):
     name = models.CharField(max_length=100)
     status = models.IntegerField(max_length=2, choices=STATUS)
 
-    def estimate_shipping(self, dimensions, country, zipcode=None, state=None, city=None):
+    def estimate_shipping(self, dimensions, country, zipcode=None, state=None,
+                          city=None, service=None):
         """ method that finds optimal solution for packing the products
         and according to the zone's carrier calc shipping estimation to zipcode
 
@@ -108,7 +109,7 @@ class Carrier(models.Model):
         if rest:
             raise ValueError('Shipping could not be estimated! these itens do not have a valid package: %s ' % rest)
 
-        total_cost, currency = self.interface.get_shipping_cost(
+        total_cost, currency = self.interface(service).get_shipping_cost(
                 bin=best_bin, packages=best_packing, country=country, zipcode=zipcode, state=state, city=city)
 
         return total_cost, currency
@@ -208,8 +209,7 @@ class UPSCarrier(Carrier):
     def needs_full_address(self):
         return True
 
-    @property
-    def interface(self):
+    def interface(self, service=None):
         return UPSInterface(self)
 
 
@@ -222,7 +222,6 @@ class CorreiosCarrier(Carrier):
     def needs_full_address(self):
         return False
 
-    @property
-    def interface(self):
+    def interface(self, service=CorreiosService.SEDEX):
         return CorreiosInterface(zip_from=self.zip_code, company=self.correios_company,
-            password=self.correios_password, service=CorreiosService.SEDEX)
+            password=self.correios_password, service=service)

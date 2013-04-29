@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse, Http404
 from shipping.models import Country, State
 from shipping.carriers import InterfaceError
-
+from shipping.carriers.correios import CorreiosService
 
 def countries(request):
     countries = Country.objects.filter(zone__status=1).filter(status=1)\
@@ -34,6 +34,7 @@ def states(request, country_code):
 def estimation(request):
     dimensions = request.POST.getlist('dimensions')
     zipcode = request.POST.get('zipcode')
+    service = request.POST.get('service') or CorreiosService.PAC
     state = request.POST.get('state')
 
     country_code = request.POST.get('country_code')
@@ -47,7 +48,8 @@ def estimation(request):
 
     try:
         carrier = country.zone.get_carrier()
-        price, currency = carrier.estimate_shipping(dimensions, country, zipcode=zipcode, state=state)
+        price, currency = carrier.estimate_shipping(dimensions, country,
+            zipcode=zipcode, state=state, service=service)
 
         response = json.dumps({'price': price, 'currency': currency})
     except InterfaceError, ie:
