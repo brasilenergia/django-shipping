@@ -58,8 +58,8 @@ def estimation(request):
     except ValueError, ve:
         logging.exception('oops, problem when estimate shipping')
         response = json.dumps({'error': str(ve), 'code': 'value'})
-    except:
+    except Exception, e:
         logging.exception('oops, problem when estimate shipping')
-        response = json.dumps({'error': str(ve), 'code': 'except'})
+        response = json.dumps({'error': str(e), 'code': 'except'})
 
     return HttpResponse(response, mimetype="application/json;charset=utf-8")
