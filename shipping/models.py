@@ -217,6 +217,7 @@ class CorreiosCarrier(Carrier):
     correios_company = models.CharField(max_length=200, null=True, help_text='required when using E-Sedex')
     correios_password = models.CharField(max_length=200, null=True, help_text='required when using E-Sedex')
     zip_code = models.CharField(max_length=20, null=True)
+    esedex_code = models.CharField(max_length=5, null=True)
 
     @property
     def needs_full_address(self):
