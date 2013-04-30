@@ -12,7 +12,7 @@ class EstimationTestCase(TestCase):
         correios_params = (
             'strRetorno=xml',
             'nVlValorDeclarado=0',
-            'nCdServico=40010',
+            'nCdServico=41106',
             'nVlDiametro=56',
             'sCdMaoPropria=',
             'nVlComprimento=40',
@@ -28,7 +28,7 @@ class EstimationTestCase(TestCase):
         )
 
         correios_response = """<Servicos><cServico>
-            <Codigo>40010</Codigo>
+            <Codigo>41106</Codigo>
             <Valor>12,10</Valor>
             <PrazoEntrega>1</PrazoEntrega>
             <ValorMaoPropria>0,00</ValorMaoPropria>
